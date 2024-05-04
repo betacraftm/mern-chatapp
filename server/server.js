@@ -6,6 +6,8 @@ const messageRoutes = require('./routes/messageRoutes')
 const connectDB = require('./db/connectDb')
 const mongoose = require('mongoose')
 const cookieParser = require('cookie-parser')
+const cors = require('cors')
+const corsOption = require('./config/corsOption')
 
 const app = express()
 const PORT = process.env.PORT || 1010
@@ -13,6 +15,10 @@ const PORT = process.env.PORT || 1010
 connectDB()
 
 dotenv.config()
+
+app.use(cors(corsOption))
+
+app.use(express.urlencoded({ extended: false }))
 
 app.use(express.json())
 
