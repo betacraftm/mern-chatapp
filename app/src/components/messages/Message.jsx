@@ -21,7 +21,9 @@ const Message = ({ message }) => {
           <img src={profilePic} alt="Avatar" />
         </div>
       </div>
-      <div className={`chat-bubble text-white ${bubleBgColor} pb-2`}>
+      <div
+        className={`chat-bubble text-white ${bubleBgColor} max-w-[300px] break-words pb-2`}
+      >
         {message.message}
       </div>
       <div className="chat-footer flex items-center gap-1 text-xs opacity-50">
