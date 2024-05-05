@@ -9,8 +9,7 @@ const cookieParser = require('cookie-parser')
 const cors = require('cors')
 const corsOption = require('./config/corsOption')
 const credentials = require('./middlewares/credential')
-
-const app = express()
+const { app, server } = require('./socket/socket')
 const PORT = process.env.PORT || 1010
 
 connectDB()
@@ -34,5 +33,5 @@ app.use('/api/users', userRoutes)
 
 mongoose.connection.once('open', () => {
   console.log('Connected to DB')
-  app.listen(PORT, () => console.log(`Server running on port ${PORT}`))
+  server.listen(PORT, () => console.log(`Server running on port ${PORT}`))
 })
