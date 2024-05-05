@@ -55,7 +55,7 @@ const signupUser = async (req, res) => {
 
     if (user) {
       return res
-        .status(StatusCodes.BAD_REQUEST)
+        .status(StatusCodes.CONFLICT)
         .json({ message: 'Username already exists' })
     }
 

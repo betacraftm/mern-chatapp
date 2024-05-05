@@ -1,9 +1,12 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
 import axios from "../api/axios";
+import { useAuth } from "../context/AuthContext";
 
 const useSignUp = () => {
   const [loading, setLoading] = useState(false);
+
+  const { setAuthUser } = useAuth();
 
   const signup = async ({ fullName, userName, pwd, confirmPwd, gender }) => {
     const success = handleInputError({
@@ -26,9 +29,17 @@ const useSignUp = () => {
       });
 
       if (response.status === 201) toast.success("User created");
-      console.log(response.data);
+
+      localStorage.setItem("user", JSON.stringify(response.data));
+
+      setAuthUser(response.data);
     } catch (error) {
-      toast.error(error.message);
+      if (error.request.status === 409) {
+        toast.error("Username already exists");
+      }
+      if (error.request.status === 400) {
+        toast.error("Password don't match");
+      }
     } finally {
       setLoading(false);
     }

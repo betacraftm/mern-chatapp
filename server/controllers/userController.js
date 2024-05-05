@@ -8,6 +8,9 @@ const getUsersForSidebar = async (req, res) => {
       '-password'
     )
 
+    if (!allUsers)
+      res.status(StatusCodes.NO_CONTENT).json({ message: 'No user to display' })
+
     return res.status(StatusCodes.OK).json(allUsers)
   } catch (error) {
     console.log('Error in getUserForSideBar: ', error.message)

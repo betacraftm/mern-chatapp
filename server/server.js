@@ -8,6 +8,7 @@ const mongoose = require('mongoose')
 const cookieParser = require('cookie-parser')
 const cors = require('cors')
 const corsOption = require('./config/corsOption')
+const credentials = require('./middlewares/credential')
 
 const app = express()
 const PORT = process.env.PORT || 1010
@@ -15,6 +16,8 @@ const PORT = process.env.PORT || 1010
 connectDB()
 
 dotenv.config()
+
+app.use(credentials)
 
 app.use(cors(corsOption))
 
@@ -25,6 +28,7 @@ app.use(express.json())
 app.use(cookieParser())
 
 app.use('/api/auth', authRoutes)
+
 app.use('/api/messages', messageRoutes)
 app.use('/api/users', userRoutes)
 
