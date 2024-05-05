@@ -11,6 +11,7 @@ const corsOption = require('./config/corsOption')
 const credentials = require('./middlewares/credential')
 const { app, server } = require('./socket/socket')
 const PORT = process.env.PORT || 1010
+const path = require('path')
 
 connectDB()
 
@@ -30,6 +31,11 @@ app.use('/api/auth', authRoutes)
 
 app.use('/api/messages', messageRoutes)
 app.use('/api/users', userRoutes)
+app.use(express.static(path.join(__dirname, '..', '/app/dist')))
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'app', 'dist', 'index.html'))
+})
 
 mongoose.connection.once('open', () => {
   console.log('Connected to DB')
