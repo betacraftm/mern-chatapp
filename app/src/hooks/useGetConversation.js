@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import axios from "../api/axios";
 import toast from "react-hot-toast";
+import { useAuth } from "../context/AuthContext";
 
 const useGetConversation = () => {
   const [loading, setLoading] = useState(false);
   const [conversations, setConversations] = useState([]);
+  const { setAuthUser } = useAuth();
 
   useEffect(() => {
     const getConversation = async () => {
@@ -15,7 +17,10 @@ const useGetConversation = () => {
         });
         setConversations(response.data);
       } catch (error) {
-        toast.error(error.message);
+        if (error.response.status === 401) {
+          toast.error("The session has expired, please login again");
+          setAuthUser(null);
+        }
       } finally {
         setLoading(false);
       }
