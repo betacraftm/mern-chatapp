@@ -19,13 +19,13 @@ const useGetConversation = () => {
       } catch (error) {
         if (error.response.status === 401) {
           toast.error("The session has expired, please login again");
+          console.log(error.response.data.message);
           setAuthUser(null);
         }
       } finally {
         setLoading(false);
       }
     };
-
     getConversation();
   }, []);
 

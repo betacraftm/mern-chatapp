@@ -13,15 +13,17 @@ function App() {
       <Routes>
         <Route
           path="/"
-          element={authUser ? <Home /> : <Navigate to={"/login"} />}
+          element={
+            authUser ? <Home /> : <Navigate to={"/login"} replace={true} />
+          }
         />
         <Route
           path="/login"
-          element={authUser ? <Navigate to={"/"} /> : <Login />}
+          element={authUser ? <Navigate to={"/"} replace={true} /> : <Login />}
         />
         <Route
           path="/signup"
-          element={authUser ? <Navigate to={"/"} /> : <SignUp />}
+          element={authUser ? <Navigate to={"/"} replace={true} /> : <SignUp />}
         />
       </Routes>
       <Toaster />

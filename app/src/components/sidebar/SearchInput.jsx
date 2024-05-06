@@ -1,18 +1,33 @@
 import { useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import useConversation from "../../store/useConversation";
-import useGetConversation from "../../hooks/useGetConversation";
 import toast from "react-hot-toast";
+import axios from "../../api/axios";
+import { useAuth } from "../../context/AuthContext";
 
 const SearchInput = () => {
-  const [search, setSearch] = useState();
+  const [search, setSearch] = useState("");
   const { setSelectedConversation } = useConversation();
-  const { conversations } = useGetConversation();
+  const [conversations, setConversations] = useState([]);
+  const { setAuthUser } = useAuth();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!search) return;
+    // get conversations
+    try {
+      const response = await axios.get("/api/users", {
+        withCredentials: true,
+      });
+      setConversations(response.data);
+    } catch (error) {
+      if (error.response.status === 401) {
+        toast.error("The session has expired, please login again");
+        console.log(error.response.data.message);
+        setAuthUser(null);
+      }
+    }
 
+    if (!search) return;
     const conversation = conversations.find((c) =>
       c.fullName.toLowerCase().includes(search.toLowerCase()),
     );
@@ -20,8 +35,6 @@ const SearchInput = () => {
     if (conversation) {
       setSelectedConversation(conversation);
       setSearch("");
-    } else {
-      toast.error("Not found");
     }
   };
   return (
